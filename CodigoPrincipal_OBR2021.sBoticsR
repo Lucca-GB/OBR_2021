@@ -1,0 +1,137 @@
+#colocar link do repositorio aqui
+
+tarefa VerdeDireita{
+	frente(100)
+	esperar(1350)
+	direita(1000)
+	esperar(700)
+	enquanto(cor(3) != "PRETO") farei {
+		direita(1000)
+		}
+	}
+
+tarefa VerdeEsquerda{
+	escrever(1, "ta no verde da direita")
+	frente(100)
+	esperar(1350)
+	esquerda(1000)
+	esperar(700)
+	enquanto(cor(3) != "PRETO") farei {
+		esquerda(1000)
+		}
+		
+	}
+
+tarefa doisVerdes{
+		parar()
+		direita(1000)
+		parar()
+	}
+
+
+#;-;-;-;-;-;-;-;-;-;-;-;-;-;-;-;-;-;-;-;-;-;-;
+
+inicio
+	enquanto(verdadeiro) farei {
+
+
+
+#desvioObstaculo
+	se (ultra(2) < 8) entao {
+			acenderled("VERMELHO")
+			parar()
+			rotacionar(1000,45)
+			esperar(400)
+			frente(200)
+			esperar(1400)
+			esquerda(1000)
+			esperar(3000)
+				enquanto(cor(3) != "PRETO")farei{
+  					frente(100)
+				}
+			se(cor(3) == "PRETO") entao {
+				frente(200)
+				esperar(800)
+				direita(1000)
+				esperar(1000)
+				enquanto(toque(1) != verdadeiro) farei {
+					tras(150)
+					parar()
+				}	
+		}
+			
+	}
+
+#curva90Graus
+ 
+	se ((cor(5) == "PRETO") ou (cor(6) == "PRETO") e (temporizador() <= 2000)) entao {
+		escrever(1, "curva para esquerda")
+		frente(100)
+		esperar(900)
+		zerartemporizador()
+		enquanto(cor(3) != "PRETO" e temporizador() <= 3400) farei {
+				esquerda(1000)
+			}
+			tras(180)
+			esperar(400)
+		} senao
+
+	se (cor(1) == "PRETO") entao {
+		escrever(1, "curva para direita")
+		frente(100)
+		esperar(900)
+		zerartemporizador()	
+		enquanto(cor(3) != "PRETO" e temporizador() <= 3400) farei {
+				direita(1000)
+			}
+			tras(180)
+			esperar(400)
+		}
+
+#seguidorLinha
+
+	se ((cor(2) == "BRANCO") e (cor(4) == "BRANCO")) entao {
+		escrever(2, "ta no seguidor de linha")	
+		acenderled("PRETO")
+		frente(170)
+		} 
+
+	se ((cor(2) == "PRETO") e (cor(4) == "BRANCO")) entao{
+			direita(1000)
+		}
+
+	se ((cor(2) == "BRANCO") e (cor(4) == "PRETO")) entao{
+			esquerda(1000)
+		}
+
+#VerdeDireita
+
+	se(cor(2) == "VERDE") entao {
+		escrever(3, "ta no verde direita")
+		acenderled("VERDE")
+		VerdeDireita()
+		tras(170)
+		esperar(350)
+		}
+
+
+#VerdeEsquerda
+
+	se(cor(4) == "VERDE") entao {
+		escrever(3, "ta no verde esquerda")
+		acenderled("VERDE")
+		VerdeEsquerda()
+		tras(170)
+		esperar(350)
+		}
+
+#doisVerdes
+
+	#se((cor(2) == "VERDE") e (cor(4) == "VERDE")) entao{
+		#escrever(1, "ta no dois verdes")
+		#doisVerdes()
+		#}
+
+	}
+
+fim
