@@ -3,27 +3,27 @@
 
 tarefa VerdeDireita{
 	frente(210)
-	esperar(1300)
+	esperar(900)
 	direita(1000)
 	esperar(1900)
 	enquanto(cor(3) != "PRETO") farei {
 		direita(1000)
 		}
 	direita(1000)
-	esperar(300)
+	esperar(130)
 	}
 
 tarefa VerdeEsquerda{
 	escrever(1, "ta no verde da direita")
 	frente(210)
-	esperar(1300)
+	esperar(900)
 	esquerda(1000)
 	esperar(1900)
 	enquanto(cor(3) != "PRETO") farei {
 		esquerda(1000)
 		}
 	esquerda(1000)
-	esperar(300)
+	esperar(130)
 	}
 
 tarefa doisVerdes{
@@ -82,12 +82,12 @@ enquanto(verdadeiro) farei {
 #curva90Graus
 
    #CurvaEsquerda
-	se (cor(5) == "PRETO") entao {
+	se (cor(5) == "PRETO" ou luz(5) < 5) entao {
 		escrever(1, "curva para esquerda")
 		frente(200)
-		esperar(1050)
+		esperar(1000)
 		zerartemporizador()
-			enquanto(cor(3) != "PRETO" e temporizador() <= 5400) farei {
+			enquanto(cor(3) != "PRETO" e temporizador() <= 4850) farei {
 					#se(temporizador() <= 3000) entao {
 						#tras(180)
 						#esperar(300)
@@ -103,12 +103,12 @@ enquanto(verdadeiro) farei {
 #------------------------------------------------------------------
 
 #CurvaDireita
-	se (cor(1) == "PRETO") entao {
+	se (cor(1) == "PRETO" ou luz(1) < 5) entao {
 		escrever(1, "curva para direita")
 		frente(200)
-		esperar(1050)
+		esperar(1000)
 		zerartemporizador()	
-			enquanto(cor(3) != "PRETO" e temporizador() <= 5400) farei {
+			enquanto(cor(3) != "PRETO" e temporizador() <= 4850) farei {
 					#se(temporizador() <= 3000) entao {
 						#tras(180)
 						#esperar(300)
@@ -129,7 +129,7 @@ enquanto(verdadeiro) farei {
 
 		escrever(2, "ta no seguidor de linha")	
 		acenderled("PRETO")
-		frente(240)
+		frente(210)
 		} 
 
 #direita
@@ -174,7 +174,7 @@ enquanto(verdadeiro) farei {
 		acenderled("VERDE")
 		VerdeDireita()
 		tras(180)
-		esperar(450)
+		esperar(530)
 		}
 }
 
@@ -199,7 +199,7 @@ enquanto(verdadeiro) farei {
 		acenderled("VERDE")
 		VerdeEsquerda()
 		tras(180)
-		esperar(450)
+		esperar(530)
 		}
 	}
 }
