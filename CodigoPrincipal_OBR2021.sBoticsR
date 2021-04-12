@@ -2,28 +2,28 @@
 
 
 tarefa VerdeDireita{
-	frente(210)
-	esperar(900)
+	frente(200)
+	esperar(800)
 	direita(1000)
-	esperar(1900)
+	esperar(1600)
 	enquanto(cor(3) != "PRETO") farei {
 		direita(1000)
 		}
 	direita(1000)
-	esperar(130)
+	esperar(110)
 	}
 
 tarefa VerdeEsquerda{
 	escrever(1, "ta no verde da direita")
-	frente(210)
-	esperar(900)
+	frente(200)
+	esperar(800)
 	esquerda(1000)
-	esperar(1900)
+	esperar(1600)
 	enquanto(cor(3) != "PRETO") farei {
 		esquerda(1000)
 		}
 	esquerda(1000)
-	esperar(130)
+	esperar(110)
 	}
 
 tarefa doisVerdes{
@@ -54,71 +54,64 @@ enquanto(verdadeiro) farei {
 
 
 #desvioObstaculo
-	se (ultra(2) < 8) entao {
+	se (ultra(3) < 8) entao {
 			acenderled("VERMELHO")
-			parar()
-			rotacionar(1000,45)
-			esperar(400)
-			frente(230)
-			esperar(1800)
-			esquerda(1000)
-			esperar(5000)
-				enquanto(cor(3) != "PRETO")farei{
-  					frente(200)
-				}
-			#se(cor(3) == "PRETO") entao {
-				#frente(200)
-				#esperar(800)
-				#direita(1000)
-				#esperar(1000)
-				#enquanto(toque(1) != verdadeiro) farei {
-				#	tras(150)
-				#	parar()
-				#}	
-		#}
-			
-	}
+			rotacionar(1000, 90)
+			frente(200)
+			esperar(1000)
+			rotacionar(500, 0-90)
+			#esperar(3000)
+			frente(200)
+			esperar(2000)
+			rotacionar(500, 0-90)
+			frente(200)
+			esperar(1000)
+			rotacionar(1000, 90)
+				enquanto(!toque(1)) farei{
+						tras(200)
+					}
+	}senao
 
 #curva90Graus
 
    #CurvaEsquerda
-	se (cor(5) == "PRETO" ou luz(5) < 5) entao {
+	se ((luz(5) < 15) ou (cor(5) == "PRETO")) entao {
 		escrever(1, "curva para esquerda")
+		acenderledrgb(143, 0, 255)
+		parar()
+		esperar(50)
 		frente(200)
-		esperar(1000)
+		esperar(650)
 		zerartemporizador()
-			enquanto(cor(3) != "PRETO" e temporizador() <= 4850) farei {
-					#se(temporizador() <= 3000) entao {
-						#tras(180)
-						#esperar(300)
-					#} senao {
-				esquerda(1000)
+			enquanto(cor(3) != "PRETO" e temporizador() <= 3000) farei {
+				esquerda(10000)
 				esperar(300)
 			}
-		#}
-			tras(220)
+			tras(200)
 			esperar(600)
+			parar()
+			esperar(300)
 		} senao
 
 #------------------------------------------------------------------
 
 #CurvaDireita
-	se (cor(1) == "PRETO" ou luz(1) < 5) entao {
+	se ((luz(1) < 15) ou (cor(1) == "PRETO")) entao {
 		escrever(1, "curva para direita")
+		acenderledrgb(143, 0, 255)
+		parar()
+		esperar(50)
 		frente(200)
-		esperar(1000)
+		esperar(650)
 		zerartemporizador()	
-			enquanto(cor(3) != "PRETO" e temporizador() <= 4850) farei {
-					#se(temporizador() <= 3000) entao {
-						#tras(180)
-						#esperar(300)
-					#} senao {
-				direita(1000)
+			enquanto(cor(3) != "PRETO" e temporizador() <= 3000) farei {
+				direita(10000)
 				esperar(300)
 			}
-		#}
-			tras(220)
+			tras(200)
 			esperar(600)
+			parar()
+			esperar(300)
 		}
 
 
@@ -129,27 +122,28 @@ enquanto(verdadeiro) farei {
 
 		escrever(2, "ta no seguidor de linha")	
 		acenderled("PRETO")
-		frente(210)
+		frente(200)
 		} 
 
 #direita
 	se ((cor(2) == "PRETO") e (cor(4) == "BRANCO")) entao{
-			direita(1000)
+			direita(10000)
 		}
+
 	
 #esquerda
 	se ((cor(2) == "BRANCO") e (cor(4) == "PRETO")) entao{
-			esquerda(1000)
+			esquerda(10000)
 		}
 
+
 #Cruz, deverá passar reto
-	se(cor(2) == "PRETO" e cor(4) == "PRETO") entao{
+	se(luz(1) < 5 e luz(5) < 5) entao{
+			escrever(3, "cruz")
+			parar()
+			esperar(5000)
 			frente(200)
-			esperar(1500)
-		#se(cor(2) == "VERDE" ou cor(4) == "VERDE") entao {
-			#	frente(190)
-			#	esperar(500)
-			#}
+			esperar(3000)
 		
 		}
 
@@ -174,7 +168,9 @@ enquanto(verdadeiro) farei {
 		acenderled("VERDE")
 		VerdeDireita()
 		tras(180)
-		esperar(530)
+		esperar(460)
+		parar()
+		esperar(300)
 		}
 }
 
@@ -183,7 +179,7 @@ enquanto(verdadeiro) farei {
 
 	se(cor(4) == "VERDE") entao {
 		#frente(50)
-		#esperar(200)
+		#esperar(180)
 #doisVerdes
 			se(cor(2) == "VERDE" e cor(4) == "VERDE") entao{
 			acenderled("AMARELO")
@@ -199,7 +195,9 @@ enquanto(verdadeiro) farei {
 		acenderled("VERDE")
 		VerdeEsquerda()
 		tras(180)
-		esperar(530)
+		esperar(460)
+		parar()
+		esperar(300)
 		}
 	}
 }
