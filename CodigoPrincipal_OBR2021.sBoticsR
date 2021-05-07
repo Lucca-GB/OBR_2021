@@ -3,7 +3,7 @@
 
 tarefa VerdeDireita{
 	frente(200)
-	esperar(800)
+	esperar(700)
 	direita(1000)
 	esperar(1600)
 	enquanto(cor(3) != "PRETO") farei {
@@ -16,7 +16,7 @@ tarefa VerdeDireita{
 tarefa VerdeEsquerda{
 	escrever(1, "ta no verde da direita")
 	frente(200)
-	esperar(800)
+	esperar(700)
 	esquerda(1000)
 	esperar(1600)
 	enquanto(cor(3) != "PRETO") farei {
@@ -35,6 +35,14 @@ tarefa doisVerdes{
 			}
 	}
 
+tarefa cruz{
+		escrever(3, "cruz")
+		parar()
+		esperar(5000)
+		frente(200)
+		esperar(3000)
+}
+
 
 #SESI Tatubóticos
 #--------------Apollo--------------
@@ -52,9 +60,15 @@ levantar(600)
 
 enquanto(verdadeiro) farei {
 
+#Rampa
+	#se(inclinacao() == 341)entao{
+		
+		#baixar(600)
+	#}
+
 
 #desvioObstaculo
-	se (ultra(3) < 8) entao {
+	se (ultra(1) < 10) entao {
 			acenderled("VERMELHO")
 			rotacionar(1000, 90)
 			frente(200)
@@ -62,7 +76,7 @@ enquanto(verdadeiro) farei {
 			rotacionar(500, 0-90)
 			#esperar(3000)
 			frente(200)
-			esperar(2000)
+			esperar(2100)
 			rotacionar(500, 0-90)
 			frente(200)
 			esperar(1000)
@@ -81,16 +95,14 @@ enquanto(verdadeiro) farei {
 		parar()
 		esperar(50)
 		frente(200)
-		esperar(650)
+		esperar(250)
 		zerartemporizador()
-			enquanto(cor(3) != "PRETO" e temporizador() <= 3000) farei {
-				esquerda(10000)
-				esperar(300)
+			enquanto((cor(3) != "PRETO") e (temporizador() <= 2250)) farei {
+				esquerda(1000)
+
 			}
 			tras(200)
-			esperar(600)
-			parar()
-			esperar(300)
+			esperar(150)
 		} senao
 
 #------------------------------------------------------------------
@@ -102,16 +114,14 @@ enquanto(verdadeiro) farei {
 		parar()
 		esperar(50)
 		frente(200)
-		esperar(650)
+		esperar(250)
 		zerartemporizador()	
-			enquanto(cor(3) != "PRETO" e temporizador() <= 3000) farei {
+			enquanto(cor(3) != "PRETO") farei {
 				direita(10000)
-				esperar(300)
+
 			}
 			tras(200)
-			esperar(600)
-			parar()
-			esperar(300)
+			esperar(150)
 		}
 
 
@@ -119,41 +129,35 @@ enquanto(verdadeiro) farei {
 #seguidorLinha
 
 	se ((cor(2) == "BRANCO") e (cor(4) == "BRANCO")) entao {
-
 		escrever(2, "ta no seguidor de linha")	
 		acenderled("PRETO")
-		frente(200)
-		} 
+		frente(180)
+		} senao 
 
 #direita
 	se ((cor(2) == "PRETO") e (cor(4) == "BRANCO")) entao{
-			direita(10000)
-		}
+			escrever(2, "DIREITA")
+			direita(1000)
+		} senao 
 
 	
 #esquerda
 	se ((cor(2) == "BRANCO") e (cor(4) == "PRETO")) entao{
-			esquerda(10000)
-		}
+			escrever(2, "ESQUERDA")
+			esquerda(1000)
+		} senao 
 
 
-#Cruz, deverá passar reto
-	se(luz(1) < 5 e luz(5) < 5) entao{
-			escrever(3, "cruz")
-			parar()
-			esperar(5000)
-			frente(200)
-			esperar(3000)
-		
-		}
 
 #VerdeDireita
 
-	se(cor(2) == "VERDE") entao {
-		frente(50)
-		esperar(200)
+	se((cor(1) == "VERDE") ou (cor(2) == "VERDE")) entao {
+			escrever(3, "ta no verde direita")
+			acenderled("VERDE")
+			frente(150)
+			esperar(100)
 #doisVerdes
-			se(cor(2) == "VERDE" e cor(4) == "VERDE") entao{
+			se((cor(2) == "VERDE") e (cor(4) == "VERDE")) entao{
 			acenderled("AMARELO")
 			parar()
 			direita(1000)
@@ -163,23 +167,28 @@ enquanto(verdadeiro) farei {
 					}
 				direita(1000)
 			} senao {
+#------------------possibilidade de troca-----------------------------
+
+			#se(cor(3) == "PRETO")entao{
+					#frente(150)
+					#esperar(1000)
+			#} senao {
+#--------------------------------------------------------------------
 		#continua
-		escrever(3, "ta no verde direita")
-		acenderled("VERDE")
 		VerdeDireita()
 		tras(180)
-		esperar(460)
+		esperar(420)
 		parar()
 		esperar(300)
 		}
-}
+	}
+#}
+
 
 
 #VerdeEsquerda
 
-	se(cor(4) == "VERDE") entao {
-		#frente(50)
-		#esperar(180)
+	se((cor(4) == "VERDE") ou (cor(5) == "VERDE")) entao {
 #doisVerdes
 			se(cor(2) == "VERDE" e cor(4) == "VERDE") entao{
 			acenderled("AMARELO")
@@ -195,11 +204,12 @@ enquanto(verdadeiro) farei {
 		acenderled("VERDE")
 		VerdeEsquerda()
 		tras(180)
-		esperar(460)
+		esperar(420)
 		parar()
 		esperar(300)
 		}
 	}
 }
+
 
 fim
