@@ -1,0 +1,41 @@
+tarefa  buscarVitima{
+	tras(190)
+	esperar(200)
+	abrir(1000)
+	baixar(600)
+	enquanto(temvitima() != verdadeiro) farei{
+		frente(200)
+	}
+	esperar(300)
+ se(temvitima() != falso) entao{
+			levantar(600)
+			fechar(1000)
+		}
+	esperar(2000)
+	baixar(600)
+	abrir(1000)
+}
+
+inicio
+
+zerartemporizador()
+	enquanto (temporizador() < 250) farei { 
+   	tras(300)
+	}
+	parar()
+	velocidadeatuador(200)
+	girarcima(600)
+	levantar(600)
+
+enquanto(verdadeiro)farei{
+
+	se((cor(2) == "BRANCO") e (cor(4) == "BRANCO"))entao{
+		frente(200)
+	}
+
+	se(ultra(3) <= 13)entao{
+		buscarVitima()
+	}
+	
+}
+fim
