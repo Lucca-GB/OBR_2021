@@ -1,5 +1,18 @@
 #https://github.com/Lucca-GB/OBR_2021
 
+tarefa rampa{
+	se (cor(2) == "BRANCO" e cor(4) == "BRANCO") entao {
+		acenderled("PRETO")
+  		frente(230)
+	}
+   	se (cor(2) == "BRANCO" e cor(4) == "PRETO") entao {
+  		esquerda(1000)
+  	}   
+	se (cor(2) == "PRETO" e cor(4) == "BRANCO") entao {
+		direita(1000)
+	}
+}
+
 tarefa seguirLinha{
 	se (cor(2) == "BRANCO" e cor(4) == "BRANCO") entao {
 		acenderled("PRETO")
@@ -12,21 +25,43 @@ tarefa seguirLinha{
 		direita(1000)
 	}
 }
+tarefa triangulo{
+	baixar(600)
+	abrir(1000)
+	esperar(1500)
+	tras(180)
+	esperar(300)
+	fechar(1000)
+	levantar(600)
+}
+
+tarefa desviarObstaculo{
+	rotacionar(1000, 90) 					#rotaciona 90 graus pra direita
+	frente(200)
+	esperar(700) 								#segue em frente pro 1 segundo
+	rotacionar(500, 0-90) 					#rotaciona 90 graus pra esquerda
+	#esperar(3000)
+	frente(200)
+	esperar(2200)                    	#segue em frente por 2.1 segundos
+	rotacionar(500, 0-90)            	#rotaciona 90 graus pra esquerda
+	frente(200)
+	esperar(700)                   	#segue em frente por 1 segundo
+	rotacionar(1000, 90) 					#aqui ele ja vai estar na linha e vai rotacionar pra direita, nisso ele vai ajustar
+}
 
 tarefa  buscarVitima{
 	tras(190)
-	esperar(200)
+	esperar(100)
 	abrir(1000)
 	baixar(600)
-	enquanto(temvitima() != verdadeiro) farei{
-		frente(220)
-	}
-	esperar(300)
- se(temvitima() != falso) entao{
+		enquanto(temvitima() != verdadeiro) farei{
+			frente(200)
+		}
+		esperar(300)
+		se(temvitima() != falso) entao{
 			levantar(600)
 			fechar(1000)
 		}
-	esperar(2500)
 }
 
 tarefa VerdeDireita{
@@ -84,7 +119,7 @@ zerartemporizador()
    	tras(300)
 	}
 	parar()
-	velocidadeatuador(200)
+	velocidadeatuador(1000)
 	girarcima(600)
 	levantar(600)
 #----------------------aqui acaba essa ação
@@ -92,35 +127,17 @@ zerartemporizador()
 enquanto(verdadeiro) farei {
 	escrevernumero(1, luz(3))
 
-#			aqui n interessa mt por enquanto, é o inicio do resgate, so ignora
-#			identificaRampa
-	enquanto((inclinacao() > 340) e (inclinacao() < 342))farei{
-		frente(230)
-	}
-#-------------------------------------
-
-
 #Aqui ele vai desviar dos obstaculos da area inferior, a movimentação é bem
 #simples, ele vai identificar se tem alguma coisa com menos de 10 de distancia
 #do ultrassonico 1, se tiver, ele vai acender led vermelho e seguir
-#desvioObstaculo
 
-	se (ultra(1) < 12) entao {
-			acenderled("VERMELHO")
-			rotacionar(1000, 90) 					#rotaciona 90 graus pra direita
-			frente(200)
-			esperar(1100) 								#segue em frente pro 1 segundo
-			rotacionar(500, 0-90) 					#rotaciona 90 graus pra esquerda
-			#esperar(3000)
-			frente(200)
-			esperar(2200)                    	#segue em frente por 2.1 segundos
-			rotacionar(500, 0-90)            	#rotaciona 90 graus pra esquerda
-			frente(200)
-			esperar(1100)                   	#segue em frente por 1 segundo
-			rotacionar(1000, 90) 					#aqui ele ja vai estar na linha e vai rotacionar pra direita, nisso ele vai ajustar
-				enquanto(!toque(1)) farei{ 		#vai pra tras até o sensor de toque for ativo, essa ação é só pra ele alinhar
-						tras(200)
-					}
+#desvioObstaculo
+	se ((ultra(1) < 10) e (ultra(3) < 5)) entao {
+		acenderled("VERMELHO")
+		desviarObstaculo()
+		enquanto(!toque(1)) farei{ 		#vai pra tras até o sensor de toque for ativo, essa ação é só pra ele alinhar
+				tras(200)
+			}
 		seguirLinha()
 #-------------------aqui acaba a ação do osbtaculo
 	}senao
@@ -133,17 +150,22 @@ enquanto(verdadeiro) farei {
 	se ((cor(5) == "PRETO") ou (luz(5) < 13)) entao {
 		escrever(1, "curva para esquerda")
 		acenderledrgb(143, 0, 255)
+			se(cor(2) == "VERDE" ou cor(4) == "VERDE")entao{ #verifica se tem verde dps da linha preta
+				acenderled("AZUL")
+				frente(190)
+				esperar(600)
+				}	
 		parar()
 		esperar(50)
-		frente(195)
-		esperar(250) 							#vai pra frente por 250 milissegundos
-		se((cor(5) == "PRETO") ou (cor(2) == "PRETO") ou (cor(3) == "PRETO") ou (cor(4) == "PRETO") ou (cor(5) == "PRETO")) entao{ 	
+		frente(190)
+		esperar(300) 							#vai pra frente por 250 milissegundos
+			
+		se((cor(2) == "PRETO") ou (cor(3) == "PRETO") ou (cor(4) == "PRETO")) entao{ 	
 			frente(190)							#se sensor 3 estiver recebendo preto
 			esperar(350)						#ele vai pra frente
 		}senao{ 									#se n pegar nada no 3 ele so vai ignorar
-		zerartemporizador()
-			enquanto((cor(3) != "PRETO") e (temporizador() <= 2250)) farei {
-				esquerda(1000) 				#enquanto o sensor 3 estiver recebendo qualquer
+			enquanto((cor(3) != "PRETO")) farei {
+				esquerda(1000)				#enquanto o sensor 3 estiver recebendo qualquer
 													#valor diferente de preto, ele vai pra esquerda
 			}										#até achar o preto
 			tras(200)
@@ -160,17 +182,23 @@ enquanto(verdadeiro) farei {
 	se ((cor(1) == "PRETO") ou (luz(1) < 13)) entao {
 		escrever(1, "curva para direita")
 		acenderledrgb(143, 0, 255)
+			se((cor(2) == "VERDE") ou (cor(4) == "VERDE"))entao{ #verifica se tem verde dps da linha preta
+				acenderled("AZUL")
+				frente(190)
+				esperar(600)
+				}
 		parar()
 		esperar(50)
-		frente(195)
-		esperar(250)
-		se((cor(5) == "PRETO") ou (cor(2) == "PRETO") ou (cor(3) == "PRETO") ou (cor(4) == "PRETO") ou (cor(5) == "PRETO"))entao{
+		frente(190)
+		esperar(300)
+
+		se((cor(2) == "PRETO") ou (cor(3) == "PRETO") ou (cor(4) == "PRETO"))entao{
 			frente(190)
 			esperar(350)
 		}senao {
-		zerartemporizador()	
 			enquanto(cor(3) != "PRETO") farei {
 				direita(10000)
+					
 			}
 			tras(200)
 			esperar(130)
@@ -213,8 +241,6 @@ enquanto(verdadeiro) farei {
 			}
     }
 
-
-
 #VerdeDireita
 
 	se((cor(1) == "VERDE") ou (cor(2) == "VERDE")) entao {
@@ -226,6 +252,12 @@ enquanto(verdadeiro) farei {
 				se((cor(2) == "VERDE") e (cor(4) == "VERDE")) entao{
 				acenderled("AMARELO")
 				parar()
+				frente(100)
+				esperar(300)
+				se(cor(2) == "VERDE" ou cor(4) == "VERDE")entao{
+					frente(170)
+					esperar(300)
+				}
 				direita(1000)
 				esperar(5000)
 					enquanto(cor(3) != "PRETO") farei{
@@ -258,6 +290,12 @@ enquanto(verdadeiro) farei {
 			se(cor(2) == "VERDE" e cor(4) == "VERDE") entao{
 			acenderled("AMARELO")
 			parar()
+				frente(100)
+				esperar(500)
+				se(cor(2) == "VERDE" ou cor(4) == "VERDE")entao{
+					frente(170)
+					esperar(300)
+				}
 			direita(1000)
 			esperar(5000)
 				enquanto(cor(3) != "PRETO") farei{
@@ -273,14 +311,26 @@ enquanto(verdadeiro) farei {
 		}
 		seguirLinha()
 	}
-	enquanto(temporizador() > 55000) farei{
-		se(ultra(3) < 13)entao{
-			buscarVitima()
-			baixar(600)
-			abrir(1000)
+	escrevernumero(3, inclinacao())
+	enquanto(inclinacao() > 337 e inclinacao() < 343)farei{
+		rampa()
+	}
+	escrevernumero(2, ultra(1))
+enquanto(cor(2) == "BRANCO" e cor(3) == "BRANCO" e cor(4) == "BRANCO")farei{
+	frente(180)
+		se(ultra(1) < 75)entao{
+			se(cor(6) == "PRETO")entao{
+				rotacionar(1000, 180)
 			}
+			se(cor(6) != "PRETO")entao{
+				frente(180)
+				esperar(200)
+				rotacionar(1000, 90)
+			}
+		}
 	}
 }
+
 
 
 fim
