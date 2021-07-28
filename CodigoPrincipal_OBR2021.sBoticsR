@@ -1,5 +1,21 @@
 #https://github.com/Lucca-GB/OBR_2021
 
+tarefa curvaEsquerda{
+	frente(190)
+	esperar(250)
+		enquanto(cor(3) != "PRETO")farei{
+			esquerda(1000)
+		}
+	}
+
+tarefa curvaDireita{
+	frente(190)
+	esperar(250)
+		enquanto(cor(3) != "PRETO")farei{
+			direita(1000)
+		}
+}
+
 tarefa rampa{
 	se (cor(2) == "BRANCO" e cor(4) == "BRANCO") entao {
 		acenderled("PRETO")
@@ -38,14 +54,14 @@ tarefa triangulo{
 tarefa desviarObstaculo{
 	rotacionar(1000, 90) 					#rotaciona 90 graus pra direita
 	frente(200)
-	esperar(700) 								#segue em frente pro 1 segundo
+	esperar(840) 								#segue em frente pro 1 segundo
 	rotacionar(1000, 0-90) 					#rotaciona 90 graus pra esquerda
 	#esperar(3000)
 	frente(200)
 	esperar(2300)                    	#segue em frente por 2.1 segundos
 	rotacionar(1000, 0-90)            	#rotaciona 90 graus pra esquerda
 	frente(200)
-	esperar(700)                   	#segue em frente por 1 segundo
+	esperar(840)                   	#segue em frente por 1 segundo
 	rotacionar(1000, 90) 					#aqui ele ja vai estar na linha e vai rotacionar pra direita, nisso ele vai ajustar
 }
 
@@ -75,7 +91,6 @@ tarefa VerdeDireita{
 	}
 
 tarefa VerdeEsquerda{
-	escrever(1, "ta no verde da direita")
 	frente(200)
 	esperar(750)
 	esquerda(1000)
@@ -123,7 +138,7 @@ enquanto(variavel == 1) farei {
 #simples, ele vai identificar se tem alguma coisa com menos de 10 de distancia
 #do ultrassonico 1, se tiver, ele vai acender led vermelho e seguir
 #desvioObstaculo
-	se ((ultra(1) < 13)) entao {
+	se ((ultra(1) < 14)) entao {
 		acenderled("VERMELHO")
 		desviarObstaculo()
 		enquanto(!toque(1)) farei{ 		#vai pra tras até o sensor de toque for ativo, essa ação é só pra ele alinhar
@@ -180,7 +195,7 @@ enquanto(variavel == 1) farei {
 		esperar(250)
 		se((cor(1) == "PRETO") ou (cor(2) == "PRETO") ou (cor(3) == "PRETO") ou (cor(4) == "PRETO") ou (cor(5) == "PRETO"))entao{
 			frente(190)
-			esperar(350)
+			esperar(400)
 		}senao {
 		zerartemporizador()	
 			enquanto(cor(3) != "PRETO") farei {
@@ -195,7 +210,11 @@ enquanto(variavel == 1) farei {
 #para no vermelho
 	se(cor(3) == "VERMELHO")entao{
 		acenderled("VERMELHO")
-		parar()
+		frente(180)
+		esperar(110)
+			enquanto(cor(3) == "VERMELHO")farei{
+				parar()
+			}
 	}
 #seguidorLinha
 #DIREITA
@@ -217,7 +236,7 @@ enquanto(variavel == 1) farei {
 			}
     }
     se(cor(1) == "BRANCO" e cor(2) == "BRANCO" e cor(4) == "BRANCO" e cor(5) == "BRANCO")entao{
-      frente(165) 			#se sensores 1, 2, 3 e 4 forem branco, ele vai pra frente
+      frente(175) 			#se sensores 1, 2, 3 e 4 forem branco, ele vai pra frente
 	 	acenderled("PRETO")
 		zerartemporizador()
 		se(temporizador() > 2000)entao{ #se essa ação estiver sendo executava
@@ -286,33 +305,116 @@ enquanto(variavel == 1) farei {
 	enquanto(ultra(2) < 35)farei{
 		rampa()
 	}
-	se(inclinacao() > 338 e inclinacao() < 342 e ultra(2) < 38)entao{
+	se(inclinacao() > 335 e inclinacao() < 345 e ultra(2) < 41)entao{
 		variavel = 5
 	}
 
 	escrevernumero(2, variavel)
-#-----------------------------------------------------------------------------------------------------
+	
+###########################################################################################################################
+###########################################################################################################################
+###########################################################################################################################
 	enquanto(variavel == 5)farei{
-#para no vermelho
-		se(cor(3) == "VERMELHO")entao{
-			acenderled("VERMELHO")
-			parar()
+		rampa()
+#DIREITA
+    se(cor(1) == "PRETO" ou cor(2) == "PRETO")entao{
+        direita(1000) 		#se o sensor 1 ou 2 for preto, ele vira pra direita	
+		se(temporizador() > 2000)entao{	#se essa ação estiver sendo executava
+													#por 3.5 seg, ele da um toque pra frente
+				frente(200)
+				esperar(50)
+			}
+    }
+#ESQUERDA
+    se(cor(4) == "PRETO" ou cor(5) == "PRETO")entao{
+        esquerda(1000)								#se o sensor 4 ou 5 for preto, ele vira pra esquerda
+			se(temporizador() > 2000)entao{		#se essa ação estiver sendo executava
+															#por 3.5 seg, ele da um toque pra frente
+				frente(200)
+				esperar(50)
+			}
+    }
+    se(cor(1) == "BRANCO" e cor(2) == "BRANCO" e cor(4) == "BRANCO" e cor(5) == "BRANCO")entao{
+      frente(165) 			#se sensores 1, 2, 3 e 4 forem branco, ele vai pra frente
+	 	acenderled("PRETO")
+		zerartemporizador()
+		se(temporizador() > 2000)entao{ #se essa ação estiver sendo executava
+													#por 3.5 seg, ele da um toque pra frente
+				frente(190)
+				esperar(50)
+			}
+    }
+		se((cor(5) == "VERDE") ou (cor(4) == "VERDE")) entao {
+			acenderled("VERDE")
+			VerdeDireita()
+		}
+		se((cor(5) == "VERDE") ou (cor(4) == "VERDE")) entao {
+			acenderled("VERDE")
+			VerdeEsquerda()
 		}
 		seguirLinha()
-		se(ultra(2) > 700)entao{
-			frente(180)
-			esperar(1300)
-			enquanto(direcao() < 180)farei{
-				direita(1000)
-			}
+		se(cor(1) == "PRETO")entao{
+			acenderledrgb(143, 0, 255)
+			frente(190)
+			esperar(240)
+				enquanto(cor(3) != "PRETO")farei{
+					direita(1000)	
+				}
 			seguirLinha()
-		}senao
-		se(ultra(1) < 24)entao{
+		}
+		se(cor(5) == "PRETO")entao{
+			acenderledrgb(143, 0, 255)
+			frente(190)
+			esperar(240)
+				enquanto(cor(3) != "PRETO")farei{
+					esquerda(1000)	
+				}
+			seguirLinha()
+		}
+#para no vermelho
+	se(cor(3) == "VERMELHO")entao{
+		acenderled("VERMELHO")
+		frente(180)
+		esperar(110)
+			enquanto(cor(3) == "VERMELHO")farei{
+				parar()
+			}
+	}
+		#se(ultra(2) > 700)entao{
+		#	frente(180)
+		#	esperar(1300)
+		#	enquanto(direcao() < 180)farei{
+		#		direita(1000)
+		#	}
+		#	seguirLinha()
+		#}
+		se(ultra(1) < 28)entao{
 			esquerda(1000)
 			esperar(3500)
-			frente(180)
-			esperar(1000)
+				se(ultra(1) > 50)entao{
+					frente(180)
+					esperar(500)
+				}
+				seguirLinha()
+				se(ultra(1) < 50)entao{
+					direita(1000)
+					esperar(6900)
+				}
+				seguirLinha()
 		}
+		se(cor(6) == "PRETO")entao{
+			enquanto(direcao() < 135)farei{
+				direita(1000)
+			}
+			frente(180)
+			esperar(2000)
+				enquanto(direcao() < 178)farei{
+					direita(1000)
+				}
+				seguirLinha()
+		}
+		
+
 	}
 
 
